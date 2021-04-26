@@ -1,6 +1,155 @@
+<!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Literally just pong</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script src="lib/p5.js" type="text/javascript"></script>
+    <script src="lib/p5.collide2D.js" type="text/javascript"></script> 
+    <style>
+      body {
+        margin = 0;
+      }
+    </style>
   </head>
   <body>
+    <script>
+      var h = window.innerHeight;
+      var w = window.innerWidth;
+      var play = false
+      var dX = [-1,1]
+      var dY = Math.random()*40-20
+      var r = Math.floor(Math.random()*2)
+      var sX = [5,7.5,10,15,20]
+      var p1Win = false
+      var p2Win = false
+      var p1Collide = false
+      var p2Collide = false
+      var p1;
+      var p2;
+      var ball;
+
+      function setup() {
+        createCanvas(w,h);
+        p1 = new p1();
+        p2 = new p2();
+        ball = new ball();
+      }
+
+      function draw() {
+        clear()
+        background('black');
+        stroke('red');
+        strokeWeight(5)
+        line(25, 0, 25, h);
+        stroke('blue');
+        strokeWeight(5)
+        line(w-25, 0, w-25, h);
+        p1Win = collideLineCircle(w-25, 0, w-25, h, ball.x, ball.y, 25);
+        p2Win = collideLineCircle(25, 0, 25, h, ball.x, ball.y, 25);
+        p1Collide = collideRectCircle(p1.x-12.5, p1.y-100, 25, 200, ball.x, ball.y, 25);
+        p2Collide = collideRectCircle(p2.x-12.5, p2.y-100, 25, 200, ball.x, ball.y, 25);
+        p1.show();
+        p2.show();
+        ball.show();
+        if (keyIsPressed == true) {
+          play = true
+        }
+        if (play == true) {
+          p1.update();
+          p2.update();
+          ball.update();
+        }
+        if ((p1Collide == true) || (p2Collide == true)) {
+            dY = Math.random()*40-20
+          }
+        if (p1Win == true) {
+          window.alert("Player 1 wins");
+          noLoop();
+        }
+        if (p2Win == true) {
+          window.alert("Player 2 wins");
+          noLoop();
+        }
+      }
+
+      function p1() {
+        this.x = 100;
+        this.y = h/2;
+        this.show = function() {
+          fill(color('black'));
+          stroke(color('red'));
+          strokeWeight(5);
+          rect(this.x,this.y,25,200);
+          rectMode(CENTER);
+        }
+        this.update = function() {
+          if (keyIsDown(87)) {
+            this.y -= 10;
+          }
+          if (keyIsDown(83)) {
+            this.y += 10;
+          }
+          if (this.y < 105) {
+            this.y = 105;
+          }
+          if (this.y > h-105) {
+            this.y = h-105;
+          }
+        }
+      }
+
+      function p2() {
+        this.x = w-100;
+        this.y = h/2;
+        this.show = function() {
+          fill(color('black'));
+          stroke(color('blue'));
+          strokeWeight(5);
+          rect(this.x,this.y,25,200);
+          rectMode(CENTER);
+        }
+        this.update = function() {
+          if (keyIsDown(38)) {
+            this.y -= 10;
+          }
+          if (keyIsDown(40)) {
+            this.y += 10;
+          }
+          if (this.y < 105) {
+            this.y = 105;
+          }
+          if (this.y > h-105) {
+            this.y = h-105;
+          }
+        }
+      }
+
+      function ball() {
+        this.x = w/2;
+        this.y = h/2;
+        this.show = function() {
+          fill(color('black'));
+          stroke(color('white'));
+          strokeWeight(5);
+          circle(this.x,this.y,25);
+          rectMode(CENTER);
+        }
+        this.update = function() {
+          this.y += dY
+          if ((this.y < 30) || (this.y > h-30)) {
+            dY = dY*-1;
+          }
+          this.x += dX[r]*sX[2]
+          if (p1Collide == true) {
+            r = 1
+          }
+          if (p2Collide == true) {
+            r = 0
+          }
+        }
+      }
+    </script>
   </body>
 </html>
