@@ -40,6 +40,21 @@
       function draw() {
         clear()
         background('black');
+        textAlign(CENTER);
+        textSize(50);
+        if (play == false) {
+          stroke('white');
+          text('Press Any Key to Begin', w/2, 550);
+        }
+        stroke('red');
+        text('W', 100, 75);
+        text('S', 100, 550);
+        stroke('blue');
+        textSize(75);
+        text('^', w-100, 100);
+        textSize(60);
+        text('v', w-100, 550);
+        fill(0, 0, 255);
         stroke('red');
         strokeWeight(5)
         line(25, 0, 25, h);
@@ -65,11 +80,21 @@
             dY = Math.random()*40-20
           }
         if (p1Win == true) {
-          window.alert("Player 1 wins");
+          textSize(75);
+          stroke('red');
+          text('Player 1 Wins!', w/2, 100);
+          stroke('white');
+          textSize(50);
+          text('Reload Page to Play Again', w/2, 550);
           noLoop();
         }
         if (p2Win == true) {
-          window.alert("Player 2 wins");
+          textSize(75);
+          stroke('blue');
+          text('Player 2 Wins!', w/2, 100);
+          stroke('white');
+          textSize(50);
+          text('Reload Page to Play Again', w/2, 550);
           noLoop();
         }
       }
